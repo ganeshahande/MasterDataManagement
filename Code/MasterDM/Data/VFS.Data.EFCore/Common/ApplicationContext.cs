@@ -19,6 +19,7 @@ namespace VFS.Data.EFCore.Common
         public virtual DbSet<JurisdictionMap> JurisdictionMap { get; set; }
         public virtual DbSet<UnitOps> UnitOps { get; set; }
         public virtual DbSet<CountryMap> CountryMap { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,8 @@ namespace VFS.Data.EFCore.Common
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.CreatedBy).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.DialCode).HasMaxLength(100);
 
@@ -47,6 +50,12 @@ namespace VFS.Data.EFCore.Common
                 entity.Property(e => e.Nationality)
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.Country)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MStUser_Country");
             });
 
             modelBuilder.Entity<CountryOfOperation>(entity =>
@@ -173,6 +182,24 @@ namespace VFS.Data.EFCore.Common
                     .HasForeignKey(d => d.JurisdictionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Juris_JurisdictId");
+            });
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("MStUser");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LoginId)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
         }
     }

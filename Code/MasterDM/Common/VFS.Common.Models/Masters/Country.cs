@@ -18,7 +18,9 @@ namespace VFS.Common.Models.Masters
         public string Isocode3 { get; set; }
         public string DialCode { get; set; }
         public string Nationality { get; set; }
+        public int CreatedBy { get; set; }
 
+        public User CreatedByNavigation { get; set; }
         public ICollection<CountryOfOperation> CountryOfOperation { get; set; }
         public ICollection<CountryMap> CountryMap { get; set; }
     }

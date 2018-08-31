@@ -16,5 +16,6 @@ namespace VFS.Common.Models.Masters
         public CountryOfOperation CountryOps { get; set; }
         public Mission Mission { get; set; }
         public UnitOps UnitOps { get; set; }
+        public User User { get; set; }
     }
 }

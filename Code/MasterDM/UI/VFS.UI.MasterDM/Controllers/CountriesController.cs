@@ -22,7 +22,8 @@ namespace VFS.UI.MasterDM.Controllers
         // GET: Countries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Country.ToListAsync());
+            var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
+            return View(await _DBMISSIONContext.ToListAsync());
         }
 
         // GET: Countries/Details/5
@@ -46,6 +47,7 @@ namespace VFS.UI.MasterDM.Controllers
         // GET: Countries/Create
         public IActionResult Create()
         {
+            ViewData["CreatedBy"] = new SelectList(_context.User, "Id", "FirstName");
             return View();
         }
 
@@ -54,7 +56,7 @@ namespace VFS.UI.MasterDM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality")] Country country)
+        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy")] Country country)
         {
             if (ModelState.IsValid)
             {
@@ -78,6 +80,7 @@ namespace VFS.UI.MasterDM.Controllers
             {
                 return NotFound();
             }
+            ViewData["CreatedBy"] = new SelectList(_context.User, "Id", "FirstName");
             return View(country);
         }
 
@@ -86,7 +89,7 @@ namespace VFS.UI.MasterDM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy")] Country country)
         {
             if (id != country.Id)
             {
