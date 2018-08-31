@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace VFS.UI.MasterDM.Controllers
     public class CountriesController : Controller
     {
         private readonly ApplicationContext _context;
+        private int ? UserId;
 
         public CountriesController(ApplicationContext context)
         {
@@ -20,9 +22,12 @@ namespace VFS.UI.MasterDM.Controllers
         }
 
         // GET: Countries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
+            if(id != null)
+            { HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id)); }
+            
             return View(await _DBMISSIONContext.ToListAsync());
         }
 
@@ -56,10 +61,12 @@ namespace VFS.UI.MasterDM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy")] Country country)
+        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy]")] Country country)
         {
             if (ModelState.IsValid)
             {
+                country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+
                 _context.Add(country);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -70,7 +77,7 @@ namespace VFS.UI.MasterDM.Controllers
         // GET: Countries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if ((id == null) || (id == 0) )
             {
                 return NotFound();
             }
@@ -100,6 +107,7 @@ namespace VFS.UI.MasterDM.Controllers
             {
                 try
                 {
+                    country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
                     _context.Update(country);
                     await _context.SaveChangesAsync();
                 }

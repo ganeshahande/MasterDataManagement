@@ -9,6 +9,7 @@ namespace VFS.Common.Models.Masters
         public UnitOps()
         {
             CountryMap = new HashSet<CountryMap>();
+            NationalityMap = new HashSet<NationalityMap>();
         }
 
         public Guid Id { get; set; }
@@ -19,5 +20,6 @@ namespace VFS.Common.Models.Masters
 
         public JurisdictionMap Jurisdiction { get; set; }
         public ICollection<CountryMap> CountryMap { get; set; }
+        public ICollection<NationalityMap> NationalityMap { get; set; }
     }
 }

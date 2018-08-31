@@ -20,7 +20,7 @@ namespace VFS.Data.EFCore.Common
         public virtual DbSet<UnitOps> UnitOps { get; set; }
         public virtual DbSet<CountryMap> CountryMap { get; set; }
         public virtual DbSet<User> User { get; set; }
-
+        public virtual DbSet<NationalityMap> NationalityMap { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Country>(entity =>
@@ -201,7 +201,32 @@ namespace VFS.Data.EFCore.Common
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
+            modelBuilder.Entity<NationalityMap>(entity =>
+            {
+                entity.ToTable("MSTNationalityMap");
+
+                entity.HasOne(d => d.CountryOps)
+                    .WithMany(p => p.NationalityMap)
+                    .HasForeignKey(d => d.CountryOpsId)
+                    .HasConstraintName("FK_CountryOfOperation_MSTNationalityMap");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.NationalityMap)
+                    .HasForeignKey(d => d.MissionId)
+                    .HasConstraintName("FK_Mission_MSTNationalityMap");
+
+                entity.HasOne(d => d.Nationality)
+                    .WithMany(p => p.NationalityMap)
+                    .HasForeignKey(d => d.NationalityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Country_MSTNationalityMap");
+
+                entity.HasOne(d => d.UnitOps)
+                    .WithMany(p => p.NationalityMap)
+                    .HasForeignKey(d => d.UnitOpsId)
+                    .HasConstraintName("FK_UnitOps_MSTNationalityMap");
+            });
         }
     }
 }
-    
+

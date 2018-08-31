@@ -10,6 +10,7 @@ namespace VFS.Common.Models.Masters
         {
             CountryOfOperation = new HashSet<CountryOfOperation>();
             CountryMap = new HashSet<CountryMap>();
+            NationalityMap = new HashSet<NationalityMap>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -23,5 +24,7 @@ namespace VFS.Common.Models.Masters
         public User CreatedByNavigation { get; set; }
         public ICollection<CountryOfOperation> CountryOfOperation { get; set; }
         public ICollection<CountryMap> CountryMap { get; set; }
+        public ICollection<NationalityMap> NationalityMap { get; set; }
+
     }
 }
