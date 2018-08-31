@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VFS.Common.Models.Masters;
+using VFS.Common.Models.AdminMasters;
 
 namespace VFS.Data.EFCore.Common
 {
@@ -12,17 +13,28 @@ namespace VFS.Data.EFCore.Common
         {
         }
 
+        #region MASTERS
         public DbSet<Country> Country { get; set; }
         public virtual DbSet<Mission> Mission { get; set; }
         public virtual DbSet<CountryOfOperation> CountryOfOperation { get; set; }
         public virtual DbSet<Jurisdiction> Jurisdiction { get; set; }
         public virtual DbSet<JurisdictionMap> JurisdictionMap { get; set; }
         public virtual DbSet<UnitOps> UnitOps { get; set; }
-        public virtual DbSet<CountryMap> CountryMap { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<CountryMap> CountryMap { get; set; }        
         public virtual DbSet<NationalityMap> NationalityMap { get; set; }
+        #endregion
+
+        #region ADMIN MASTERS
+        public virtual DbSet<UserMaster> UserMaster { get; set; }
+        public virtual DbSet<RoleMaster> RoleMaster { get; set; }
+        public virtual DbSet<UIMaster> UIMaster { get; set; }
+        public virtual DbSet<UIRoleMap> UIRoleMap { get; set; }             
+        public virtual DbSet<UserRoleMap> UserRoleMap { get; set; }
+        #endregion
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region MASTERS
             modelBuilder.Entity<Country>(entity =>
             {
                 entity.Property(e => e.Code)
@@ -124,6 +136,7 @@ namespace VFS.Data.EFCore.Common
                     .HasForeignKey(d => d.JurisdictionId)
                     .HasConstraintName("FK_Jurisdiction_JurisdictionMapId");
             });
+
             modelBuilder.Entity<Mission>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -137,6 +150,7 @@ namespace VFS.Data.EFCore.Common
                     .IsRequired()
                     .HasMaxLength(250);
             });
+
             modelBuilder.Entity<CountryMap>(entity =>
             {
                 entity.ToTable("MSTCountryMap");
@@ -163,6 +177,7 @@ namespace VFS.Data.EFCore.Common
                     .HasForeignKey(d => d.UnitOpsId)
                     .HasConstraintName("FK_MSTCountryMap_UnitOps");
             });
+
             modelBuilder.Entity<UnitOps>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -182,25 +197,8 @@ namespace VFS.Data.EFCore.Common
                     .HasForeignKey(d => d.JurisdictionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Juris_JurisdictId");
-            });
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("MStUser");
+            });            
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LoginId)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-            });
             modelBuilder.Entity<NationalityMap>(entity =>
             {
                 entity.ToTable("MSTNationalityMap");
@@ -226,6 +224,96 @@ namespace VFS.Data.EFCore.Common
                     .HasForeignKey(d => d.UnitOpsId)
                     .HasConstraintName("FK_UnitOps_MSTNationalityMap");
             });
+            #endregion
+
+            #region ADMIN MASTERS
+            modelBuilder.Entity<UserMaster>(entity =>
+            {
+                entity.ToTable("MStUser");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LoginId)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RoleMaster>(entity =>
+            {
+                entity.ToTable("MSTRole");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UIMaster>(entity =>
+            {
+                entity.ToTable("MSTUI");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PageName)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UIRoleMap>(entity =>
+            {
+                entity.ToTable("MSTRoleUIMap");
+
+                entity.Property(e => e.Uiid).HasColumnName("UIId");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UIRoleMap)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MSTUI_RoleId");
+
+                entity.HasOne(d => d.Ui)
+                    .WithMany(p => p.UIRoleMap)
+                    .HasForeignKey(d => d.Uiid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MSTUI_UIId");
+            });
+
+            modelBuilder.Entity<UserRoleMap>(entity =>
+            {
+                entity.ToTable("MSTUserRoleMapping");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UserRoleMap)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MSTRole_RoleId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserRoleMap)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MSTUser_UserId");
+            });
+            #endregion
         }
     }
 }

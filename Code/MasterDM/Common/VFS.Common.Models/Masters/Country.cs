@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using VFS.Common.Models.AdminMasters;
 
 namespace VFS.Common.Models.Masters
 {
@@ -21,7 +20,7 @@ namespace VFS.Common.Models.Masters
         public string Nationality { get; set; }
         public int CreatedBy { get; set; }
 
-        public User CreatedByNavigation { get; set; }
+        public UserMaster CreatedByNavigation { get; set; }
         public ICollection<CountryOfOperation> CountryOfOperation { get; set; }
         public ICollection<CountryMap> CountryMap { get; set; }
         public ICollection<NationalityMap> NationalityMap { get; set; }

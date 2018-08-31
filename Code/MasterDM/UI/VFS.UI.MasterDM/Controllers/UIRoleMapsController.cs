@@ -2,35 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using VFS.Common.Models.Masters;
+using VFS.Common.Models.AdminMasters;
 using VFS.Data.EFCore.Common;
 
 namespace VFS.UI.MasterDM.Controllers
 {
-    public class CountriesController : Controller
+    public class UIRoleMapsController : Controller
     {
-        private readonly ApplicationContext _context;       
+        private readonly ApplicationContext _context;
 
-        public CountriesController(ApplicationContext context)
+        public UIRoleMapsController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Countries
-        public async Task<IActionResult> Index(int? id)
+        // GET: UIRoleMaps
+        public async Task<IActionResult> Index()
         {
-            var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
-            if(id != null)
-            { HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id)); }
-            
-            return View(await _DBMISSIONContext.ToListAsync());
+            var applicationContext = _context.UIRoleMap.Include(u => u.Role).Include(u => u.Ui);
+            return View(await applicationContext.ToListAsync());
         }
 
-        // GET: Countries/Details/5
+        // GET: UIRoleMaps/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,66 +34,70 @@ namespace VFS.UI.MasterDM.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Country
+            var uIRoleMap = await _context.UIRoleMap
+                .Include(u => u.Role)
+                .Include(u => u.Ui)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (uIRoleMap == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(uIRoleMap);
         }
 
-        // GET: Countries/Create
+        // GET: UIRoleMaps/Create
         public IActionResult Create()
         {
-            ViewData["CreatedBy"] = new SelectList(_context.UserMaster, "Id", "FirstName");
+            ViewData["RoleId"] = new SelectList(_context.RoleMaster, "Id", "Code");
+            ViewData["Uiid"] = new SelectList(_context.UIMaster, "Id", "Name");
             return View();
         }
 
-        // POST: Countries/Create
+        // POST: UIRoleMaps/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy]")] Country country)
+        public async Task<IActionResult> Create([Bind("Id,Uiid,RoleId")] UIRoleMap uIRoleMap)
         {
             if (ModelState.IsValid)
             {
-                country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-
-                _context.Add(country);
+                _context.Add(uIRoleMap);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            ViewData["RoleId"] = new SelectList(_context.RoleMaster, "Id", "Code", uIRoleMap.RoleId);
+            ViewData["Uiid"] = new SelectList(_context.UIMaster, "Id", "Name", uIRoleMap.Uiid);
+            return View(uIRoleMap);
         }
 
-        // GET: Countries/Edit/5
+        // GET: UIRoleMaps/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if ((id == null) || (id == 0) )
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Country.FindAsync(id);
-            if (country == null)
+            var uIRoleMap = await _context.UIRoleMap.FindAsync(id);
+            if (uIRoleMap == null)
             {
                 return NotFound();
             }
-            ViewData["CreatedBy"] = new SelectList(_context.UserMaster, "Id", "FirstName");
-            return View(country);
+            ViewData["RoleId"] = new SelectList(_context.RoleMaster, "Id", "Code", uIRoleMap.RoleId);
+            ViewData["Uiid"] = new SelectList(_context.UIMaster, "Id", "Name", uIRoleMap.Uiid);
+            return View(uIRoleMap);
         }
 
-        // POST: Countries/Edit/5
+        // POST: UIRoleMaps/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Uiid,RoleId")] UIRoleMap uIRoleMap)
         {
-            if (id != country.Id)
+            if (id != uIRoleMap.Id)
             {
                 return NotFound();
             }
@@ -106,13 +106,12 @@ namespace VFS.UI.MasterDM.Controllers
             {
                 try
                 {
-                    country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-                    _context.Update(country);
+                    _context.Update(uIRoleMap);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
+                    if (!UIRoleMapExists(uIRoleMap.Id))
                     {
                         return NotFound();
                     }
@@ -123,10 +122,12 @@ namespace VFS.UI.MasterDM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            ViewData["RoleId"] = new SelectList(_context.RoleMaster, "Id", "Code", uIRoleMap.RoleId);
+            ViewData["Uiid"] = new SelectList(_context.UIMaster, "Id", "Name", uIRoleMap.Uiid);
+            return View(uIRoleMap);
         }
 
-        // GET: Countries/Delete/5
+        // GET: UIRoleMaps/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,30 +135,32 @@ namespace VFS.UI.MasterDM.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Country
+            var uIRoleMap = await _context.UIRoleMap
+                .Include(u => u.Role)
+                .Include(u => u.Ui)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (uIRoleMap == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(uIRoleMap);
         }
 
-        // POST: Countries/Delete/5
+        // POST: UIRoleMaps/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await _context.Country.FindAsync(id);
-            _context.Country.Remove(country);
+            var uIRoleMap = await _context.UIRoleMap.FindAsync(id);
+            _context.UIRoleMap.Remove(uIRoleMap);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CountryExists(int id)
+        private bool UIRoleMapExists(int id)
         {
-            return _context.Country.Any(e => e.Id == id);
+            return _context.UIRoleMap.Any(e => e.Id == id);
         }
     }
 }

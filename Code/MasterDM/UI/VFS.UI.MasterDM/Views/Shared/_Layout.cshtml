@@ -29,7 +29,12 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MasterData Management</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">                    
+                    <li><a asp-area="" asp-controller="UserMasters" asp-action="Index">UserMaster</a></li>
+                    <li><a asp-area="" asp-controller="RoleMasters" asp-action="Index">RoleMaster</a></li>
+                    <li><a asp-area="" asp-controller="UserRoleMaps" asp-action="Index">UserRoleMap</a></li>
+                    <li><a asp-area="" asp-controller="UIMasters" asp-action="Index">UIMaster</a></li>
+                    <li><a asp-area="" asp-controller="UIRoleMaps" asp-action="Index">UIRoleMap</a></li>
                     <li><a asp-area="" asp-controller="Countries" asp-action="Index">Country</a></li>
                     <li><a asp-area="" asp-controller="NationalityMaps" asp-action="Index">Nationality</a></li>
                 </ul>

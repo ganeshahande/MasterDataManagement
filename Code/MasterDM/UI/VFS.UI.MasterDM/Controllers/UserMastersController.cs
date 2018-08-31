@@ -2,35 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using VFS.Common.Models.Masters;
+using VFS.Common.Models.AdminMasters;
 using VFS.Data.EFCore.Common;
 
 namespace VFS.UI.MasterDM.Controllers
 {
-    public class CountriesController : Controller
+    public class UserMastersController : Controller
     {
-        private readonly ApplicationContext _context;       
+        private readonly ApplicationContext _context;
 
-        public CountriesController(ApplicationContext context)
+        public UserMastersController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Countries
-        public async Task<IActionResult> Index(int? id)
+        // GET: UserMasters
+        public async Task<IActionResult> Index()
         {
-            var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
-            if(id != null)
-            { HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id)); }
-            
-            return View(await _DBMISSIONContext.ToListAsync());
+            return View(await _context.UserMaster.ToListAsync());
         }
 
-        // GET: Countries/Details/5
+        // GET: UserMasters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,66 +33,62 @@ namespace VFS.UI.MasterDM.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Country
+            var userMaster = await _context.UserMaster
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (userMaster == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(userMaster);
         }
 
-        // GET: Countries/Create
+        // GET: UserMasters/Create
         public IActionResult Create()
         {
-            ViewData["CreatedBy"] = new SelectList(_context.UserMaster, "Id", "FirstName");
             return View();
         }
 
-        // POST: Countries/Create
+        // POST: UserMasters/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy]")] Country country)
+        public async Task<IActionResult> Create([Bind("Id,LoginId,FirstName,LastName")] UserMaster userMaster)
         {
             if (ModelState.IsValid)
             {
-                country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-
-                _context.Add(country);
+                _context.Add(userMaster);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(userMaster);
         }
 
-        // GET: Countries/Edit/5
+        // GET: UserMasters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if ((id == null) || (id == 0) )
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Country.FindAsync(id);
-            if (country == null)
+            var userMaster = await _context.UserMaster.FindAsync(id);
+            if (userMaster == null)
             {
                 return NotFound();
             }
-            ViewData["CreatedBy"] = new SelectList(_context.UserMaster, "Id", "FirstName");
-            return View(country);
+            return View(userMaster);
         }
 
-        // POST: Countries/Edit/5
+        // POST: UserMasters/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code,Isocode2,Isocode3,DialCode,Nationality,CreatedBy")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,LoginId,FirstName,LastName")] UserMaster userMaster)
         {
-            if (id != country.Id)
+            if (id != userMaster.Id)
             {
                 return NotFound();
             }
@@ -106,13 +97,12 @@ namespace VFS.UI.MasterDM.Controllers
             {
                 try
                 {
-                    country.CreatedBy = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-                    _context.Update(country);
+                    _context.Update(userMaster);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
+                    if (!UserMasterExists(userMaster.Id))
                     {
                         return NotFound();
                     }
@@ -123,10 +113,10 @@ namespace VFS.UI.MasterDM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(userMaster);
         }
 
-        // GET: Countries/Delete/5
+        // GET: UserMasters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,30 +124,30 @@ namespace VFS.UI.MasterDM.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Country
+            var userMaster = await _context.UserMaster
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (userMaster == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(userMaster);
         }
 
-        // POST: Countries/Delete/5
+        // POST: UserMasters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await _context.Country.FindAsync(id);
-            _context.Country.Remove(country);
+            var userMaster = await _context.UserMaster.FindAsync(id);
+            _context.UserMaster.Remove(userMaster);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CountryExists(int id)
+        private bool UserMasterExists(int id)
         {
-            return _context.Country.Any(e => e.Id == id);
+            return _context.UserMaster.Any(e => e.Id == id);
         }
     }
 }
