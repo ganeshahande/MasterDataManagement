@@ -16,6 +16,126 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <style>
+        body {
+            padding-top: 65px;
+        }
+
+        ul, li {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            color: #00000;
+        }
+
+        .nav {
+            color: #FFFFFF;
+        }
+
+        . navbar-nav {
+            color: #FFFFFF;
+        }
+
+        .menu {
+            background: transparent;
+            height: 60px;
+            padding: 0 0px;
+            color: #FFFFFF;
+        }
+
+            .menu > li {
+                display: inline-block;
+                padding: 0px 0px 0px 0px;
+                display: inline-block;
+                text-align: center;
+                line-height: 28px;
+                height: 32px;
+                color: #FFFFFF;
+            }
+
+                .menu > li a {
+                    display: inline-block;
+                    padding: 0px 0px 0px 0px;
+                    display: inline-block;
+                    text-align: center;
+                    line-height: 28px;
+                    height: 32px;
+                    width: 130px;
+                    color: #FFFFFF;
+                }
+
+                    .menu > li a:hover {
+                        display: inline-block;
+                        padding: 0px 0px 1px 0px;
+                        display: inline-block;
+                        text-align: center;
+                        line-height: 28px;
+                        height: 32px;
+                        width: 130px;
+                        color: #FFFFFF;
+                    }
+
+        .sub-menu {
+            position: absolute;
+            display: none;
+            background-color: transparent;
+            width: 130px;
+            color: #FFFFFF;
+            padding: 2px;
+        }
+
+            .sub-menu > li {
+                display: inline-block;
+                padding: 0px 0px 0px 0px;
+                display: inline-block;
+                text-align: center;
+                line-height: 28px;
+                height: 32px;
+                width: 130px;
+                background: #3d3b3b;
+                color: #FFFFFF;
+            }
+
+                .sub-menu > li a:hover {
+                    display: block;
+                    cursor: pointer;
+                    width: 130px;
+                    background: #ddd;
+                    color: #000000
+                }
+
+        .sub-menu2 {
+            position: absolute;
+            display: none;
+            background-color: pink;
+        }
+
+            .sub-menu2 > li {
+                display: block;
+                cursor: pointer;
+                background-color: green;
+            }
+
+                .sub-menu2 > li a:hover {
+                    display: block;
+                    Login cursor: pointer;
+                    background-color: pink;
+                }
+
+        .sub-menu2 {
+            margin-top: -2px;
+        }
+
+        li:hover .sub-menu {
+            display: block;
+            color: #FFFFFF
+        }
+
+        li:hover .sub-menu2 {
+            display: block;
+            color: #FFFFFF
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -36,7 +156,7 @@
                         <li><a asp-area="" asp-controller="@menuNames.PageName" asp-action="Index">@menuNames.Name</a></li>
                     }
                 </ul>
-                
+
             </div>
         </div>
     </nav>

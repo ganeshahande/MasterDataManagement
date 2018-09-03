@@ -40,7 +40,7 @@ namespace VFS.UI.MasterDM.Controllers
             }
             if(Search != string.Empty)
             {
-                return View(await _context.Country.Where(a => a.Name == Search || a.Isocode2 == Search || a.Isocode3 == Search || a.Nationality ==Search).Include(c => c.CreatedByNavigation).ToListAsync());
+                return View(await _context.Country.Where(a => a.Name.Contains(Search) || a.Isocode2.Contains(Search) || a.Isocode3.Contains(Search) || a.Nationality.Contains(Search)).Include(c => c.CreatedByNavigation).ToListAsync());
             }
             else
             {
