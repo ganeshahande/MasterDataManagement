@@ -31,7 +31,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @foreach (var menuNames in menus.GetMenuMaster(3))
+                    @foreach (var menuNames in menus.GetMenuMaster(1))
                     {
                         <li><a asp-area="" asp-controller="@menuNames.PageName" asp-action="Index">@menuNames.Name</a></li>
                     }

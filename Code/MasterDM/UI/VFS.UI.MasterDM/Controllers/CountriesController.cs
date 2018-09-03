@@ -21,9 +21,10 @@ namespace VFS.UI.MasterDM.Controllers
         }
 
         // GET: Countries
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id,string Search)
         {
-            var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
+            if (Search == null) Search = string.Empty;
+            //var _DBMISSIONContext = _context.Country.Where(a => a.Name == Search).Include(c => c.CreatedByNavigation);
             if(id != null)
             {
                 if (id != 3)
@@ -34,10 +35,18 @@ namespace VFS.UI.MasterDM.Controllers
                 {
                     HttpContext.Session.SetInt32("IsEditable", 0);
                 }
+                ViewData["IsEditable"] = HttpContext.Session.GetInt32("IsEditable");
                 HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id));
             }
-            
-            return View(await _DBMISSIONContext.ToListAsync());
+            if(Search != string.Empty)
+            {
+                return View(await _context.Country.Where(a => a.Name == Search || a.Isocode2 == Search || a.Isocode3 == Search || a.Nationality ==Search).Include(c => c.CreatedByNavigation).ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Country.Include(c => c.CreatedByNavigation).ToListAsync());
+            }           
+
         }
 
         // GET: Countries/Details/5
