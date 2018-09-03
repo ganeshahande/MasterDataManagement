@@ -25,7 +25,17 @@ namespace VFS.UI.MasterDM.Controllers
         {
             var _DBMISSIONContext = _context.Country.Include(c => c.CreatedByNavigation);
             if(id != null)
-            { HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id)); }
+            {
+                if (id != 3)
+                {
+                    HttpContext.Session.SetInt32("IsEditable", 1);
+                }
+                else
+                {
+                    HttpContext.Session.SetInt32("IsEditable", 0);
+                }
+                HttpContext.Session.SetInt32("UserId", Convert.ToInt32(id));
+            }
             
             return View(await _DBMISSIONContext.ToListAsync());
         }
@@ -87,6 +97,7 @@ namespace VFS.UI.MasterDM.Controllers
                 return NotFound();
             }
             ViewData["CreatedBy"] = new SelectList(_context.UserMaster, "Id", "FirstName");
+            ViewData["IsEditable"] = HttpContext.Session.GetInt32("IsEditable");
             return View(country);
         }
 

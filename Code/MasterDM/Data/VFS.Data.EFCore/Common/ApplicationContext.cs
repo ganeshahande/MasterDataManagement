@@ -30,6 +30,7 @@ namespace VFS.Data.EFCore.Common
         public virtual DbSet<UIMaster> UIMaster { get; set; }
         public virtual DbSet<UIRoleMap> UIRoleMap { get; set; }             
         public virtual DbSet<UserRoleMap> UserRoleMap { get; set; }
+        public virtual DbSet<UserContext> UserContext { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -288,11 +289,11 @@ namespace VFS.Data.EFCore.Common
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MSTUI_RoleId");
 
-                entity.HasOne(d => d.Ui)
-                    .WithMany(p => p.UIRoleMap)
-                    .HasForeignKey(d => d.Uiid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MSTUI_UIId");
+                //entity.HasOne(d => d.Ui)
+                //    .WithMany(p => p.UIRoleMap)
+                //    .HasForeignKey(d => d.Uiid)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_MSTUI_UIId");
             });
 
             modelBuilder.Entity<UserRoleMap>(entity =>

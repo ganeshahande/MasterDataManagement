@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-
 using VFS.Data.EFCore.Common;
+using VFS.Data.EFCore.Manager;
 using System;
 
 namespace VFS.UI.MasterDM
@@ -31,6 +30,7 @@ namespace VFS.UI.MasterDM
             });
             services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EFCoreDB"]));
             services.AddDistributedMemoryCache();
+            services.AddTransient<MenuMasterService, MenuMasterService>();            
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   
             });
