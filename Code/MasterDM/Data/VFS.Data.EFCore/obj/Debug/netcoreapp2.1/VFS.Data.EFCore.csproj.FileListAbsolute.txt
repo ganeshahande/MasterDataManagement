@@ -1,0 +1,14 @@
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Data.EFCore.deps.json
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Data.EFCore.runtimeconfig.json
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Data.EFCore.runtimeconfig.dev.json
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Data.EFCore.dll
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Data.EFCore.pdb
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Common.Models.dll
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\bin\Debug\netcoreapp2.1\VFS.Common.Models.pdb
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.csprojAssemblyReference.cache
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.csproj.CoreCompileInputs.cache
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.AssemblyInfoInputs.cache
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.AssemblyInfo.cs
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.csproj.CopyComplete
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.dll
+D:\_OFFICE\_SVN\_SCRUM\_APPLICATION\_VFS\MasterDataManagement\Code\MasterDM\Data\VFS.Data.EFCore\obj\Debug\netcoreapp2.1\VFS.Data.EFCore.pdb
